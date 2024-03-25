@@ -148,7 +148,7 @@ int main(int argc, char **argv) {
     tree.Insert(tmp.min, tmp.max, i);
   }
 
-  double gtime = MPI_Wtime() - ststart;
+  double ctime = MPI_Wtime() - ststart;
 
   double qstime = MPI_Wtime();
 
@@ -162,15 +162,17 @@ int main(int argc, char **argv) {
   double qtime = MPI_Wtime() - qstime;
 
   double maxqtime;
+  double maxctime;
   size_t global_sum;
 
+  MPI_Reduce(&ctime, &maxctime, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
   MPI_Reduce(&numResults, &global_sum, localQ, MPI_UNSIGNED, MPI_SUM, 0, MPI_COMM_WORLD);
-  MPI_Reduce(&maxqtime, &qtime, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
+  MPI_Reduce(&qtime, &maxqtime, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
 
   if ( my_rank == 0 ) {
-    printf("\n");
-    printf("\n");
-    printf("\n");
+    printf("Construct Time: %f\n", maxqtime);
+    printf("Query Time: %f\n", maxqtime);
+    printf("Global Sum: %u\n", global_sum);
   }
 
   MPI_Finalize();
