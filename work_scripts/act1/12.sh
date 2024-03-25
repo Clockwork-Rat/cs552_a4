@@ -13,4 +13,4 @@ module load openmpi
 
 mpicc -O3 ~/cs552/cs552_a4/range_act1_raspet.c -lm -o ~/out_act1_5
 
-srun ~/out_act1_5 5000000 50000 ZTF_ra_dec_5m.csv
+srun ~/out_act1_5 5000000 50000 ~/ZTF_ra_dec_5m.csv
