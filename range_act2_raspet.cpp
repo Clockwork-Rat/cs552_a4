@@ -138,7 +138,40 @@ int main(int argc, char **argv) {
 
   //Write code here
 
+  RTree<int, double, 2, double> tree;
+  
+  double ststart = MPI_Wtime();
 
+  // send this to each rank
+  for ( size_t i = 0; i < N; ++i ) {
+    Rect tmp = Rect(data[i].x,data[i].y,data[i].x,data[i].y);
+    tree.Insert(tmp.min, tmp.max, i);
+  }
+
+  double gtime = MPI_Wtime() - ststart;
+
+  double qstime = MPI_Wtime();
+
+  for (size_t q = 0; q < localQ; ++q) {
+    struct queryStruct query = queries[q];
+    Rect tmp = Rect(query.x_min, query.y_min,
+                    query.x_max, query.y_max);
+    numResults[q] = tree.Search(tmp.min, tmp.max, MySearchCallback, NULL);
+  }
+
+  double qtime = MPI_Wtime() - qstime;
+
+  double maxqtime;
+  size_t global_sum;
+
+  MPI_Reduce(&numResults, &global_sum, localQ, MPI_UNSIGNED, MPI_SUM, 0, MPI_COMM_WORLD);
+  MPI_Reduce(&maxqtime, &qtime, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
+
+  if ( my_rank == 0 ) {
+    printf("\n");
+    printf("\n");
+    printf("\n");
+  }
 
   MPI_Finalize();
   return 0;
