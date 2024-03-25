@@ -169,7 +169,7 @@ int main(int argc, char **argv) {
   unsigned int global_sum;
 
   MPI_Reduce(&ctime, &maxctime, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
-  MPI_Reduce(&numResults, &local_sum, 1, MPI_UNSIGNED, MPI_SUM, 0, MPI_COMM_WORLD);
+  MPI_Reduce(&local_sum, &global_sum, 1, MPI_UNSIGNED, MPI_SUM, 0, MPI_COMM_WORLD);
   MPI_Reduce(&qtime, &maxqtime, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
 
   if ( my_rank == 0 ) {

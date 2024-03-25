@@ -122,7 +122,7 @@ int main(int argc, char **argv) {
   double maxtime;
 
   MPI_Reduce(&ttime, &maxtime, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
-  MPI_Reduce(&numResults, &local_sum, 1, MPI_UNSIGNED, MPI_SUM, 0, MPI_COMM_WORLD);
+  MPI_Reduce(&local_sum, &global_count, 1, MPI_UNSIGNED, MPI_SUM, 0, MPI_COMM_WORLD);
 
   if (my_rank == 0) {
     printf("Sum: %u\n", global_count);
