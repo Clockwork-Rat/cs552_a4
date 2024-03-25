@@ -151,22 +151,25 @@ int main(int argc, char **argv) {
   double ctime = MPI_Wtime() - ststart;
 
   double qstime = MPI_Wtime();
+  unsigned int local_sum = 0;
 
   for (size_t q = 0; q < localQ; ++q) {
     struct queryStruct query = queries[q];
     Rect tmp = Rect(query.x_min, query.y_min,
                     query.x_max, query.y_max);
-    numResults[q] = tree.Search(tmp.min, tmp.max, MySearchCallback, NULL);
+    int search_res = tree.Search(tmp.min, tmp.max, MySearchCallback, NULL);
+    numResults[q] += search_res;
+    local_sum += search_res;
   }
 
   double qtime = MPI_Wtime() - qstime;
 
   double maxqtime;
   double maxctime;
-  size_t global_sum;
+  unsigned int global_sum;
 
   MPI_Reduce(&ctime, &maxctime, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
-  MPI_Reduce(&numResults, &global_sum, localQ, MPI_UNSIGNED, MPI_SUM, 0, MPI_COMM_WORLD);
+  MPI_Reduce(&numResults, &local_sum, 1, MPI_UNSIGNED, MPI_SUM, 0, MPI_COMM_WORLD);
   MPI_Reduce(&qtime, &maxqtime, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
 
   if ( my_rank == 0 ) {

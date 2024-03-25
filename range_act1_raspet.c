@@ -98,6 +98,8 @@ int main(int argc, char **argv) {
 
   double stime = MPI_Wtime();
 
+  unsigned int local_sum = 0;
+
   //Write code here
   unsigned int global_count = 0;
 
@@ -111,6 +113,7 @@ int main(int argc, char **argv) {
           point.y >= query.y_min &&
           point.y <= query.y_max ) {
             ++numResults[q];
+            ++local_sum;
           } 
     }
   }
@@ -119,7 +122,7 @@ int main(int argc, char **argv) {
   double maxtime;
 
   MPI_Reduce(&ttime, &maxtime, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
-  MPI_Reduce(&numResults, &global_count, localQ, MPI_UNSIGNED, MPI_SUM, 0, MPI_COMM_WORLD);
+  MPI_Reduce(&numResults, &local_sum, 1, MPI_UNSIGNED, MPI_SUM, 0, MPI_COMM_WORLD);
 
   if (my_rank == 0) {
     printf("Sum: %u\n", global_count);
