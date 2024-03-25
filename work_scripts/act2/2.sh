@@ -11,6 +11,6 @@
 
 module load openmpi
 
-mpic++ -O3 ~/cs552/cs552_a4/range_act2_raspet.c -lm -o ~/out_act2_2
+mpic++ -O3 ~/cs552/cs552_a4/range_act2_raspet.cpp -lm -o ~/out_act2_2
 
 srun ~/out_act2_2 5000000 50000 ~/ZTF_ra_dec_5m.csv
