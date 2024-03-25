@@ -99,17 +99,17 @@ int main(int argc, char **argv) {
   double stime = MPI_Wtime();
 
   //Write code here
-  size_t global_count = 0;
+  unsigned int global_count = 0;
 
   for (size_t n = 0; n < localN; ++n) {
     struct dataStruct point = data[n];
     for (size_t q = 0; q < localQ; ++q) {
       struct queryStruct query = queries[q];
 
-      if (point.x > query.x_min &&
-          point.x < query.x_max &&
-          point.y > query.y_min &&
-          point.y < query.y_max ) {
+      if (point.x >= query.x_min &&
+          point.x <= query.x_max &&
+          point.y >= query.y_min &&
+          point.y <= query.y_max ) {
             ++numResults[q];
           } 
     }
