@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=a4-3-6
-#SBATCH --output=/home/ijr44/cs552/a4/act2/run6.txt
-#SBATCH --error=/home/ijr44/cs552/a4/act2/run6.err
+#SBATCH --output=/home/ijr44/cs552/a4/act3/run6.txt
+#SBATCH --error=/home/ijr44/cs552/a4/act3/run6.err
 #SBATCH --time=100:00
 #SBATCH --mem=100G
 #SBATCH --nodes=2
