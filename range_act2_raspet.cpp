@@ -173,7 +173,7 @@ int main(int argc, char **argv) {
   MPI_Reduce(&qtime, &maxqtime, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
 
   if ( my_rank == 0 ) {
-    printf("Construct Time: %f\n", maxqtime);
+    printf("Construct Time: %f\n", maxctime);
     printf("Query Time: %f\n", maxqtime);
     printf("Global Sum: %u\n", global_sum);
   }
